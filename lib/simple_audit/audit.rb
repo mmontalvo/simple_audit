@@ -5,6 +5,8 @@ module SimpleAudit #:nodoc:
     belongs_to :auditable,  :polymorphic => true
     belongs_to :user,       :polymorphic => true
     serialize  :change_log
+
+    attr_accessible :user, :username, :action, :change_log
   
     # Computes the differences of the change logs between two audits.
     #
