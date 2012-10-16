@@ -1,6 +1,6 @@
 require 'rake'
 require 'rake/testtask'
-require 'rake/rdoctask'
+require 'rdoc/task'
 
 desc 'Default: run unit tests.'
 task :default => :test
@@ -45,12 +45,13 @@ begin
     gemspec.email = ["gabriel.tarnovan@cubus.ro", "mihai.tarnovan@cubus.ro"]
     gemspec.homepage = "http://github.com/gtarnovan/simple_audit"
     gemspec.authors = ["Gabriel Tarnovan", "Mihai Tarnovan"]
-    gemspec.version = "0.2.0"
+    gemspec.version = "0.2.1"
     gemspec.files = gem_files
     gemspec.test_files = test_files
     
     gemspec.rubyforge_project = 'simple_audit'
   end
+  Jeweler::RubygemsDotOrgTasks.new
 rescue LoadError
   puts "Jeweler not available. Install it with: gem install jeweler"
 end
