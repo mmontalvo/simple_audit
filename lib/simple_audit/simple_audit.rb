@@ -48,8 +48,6 @@ module SimpleAudit
 
           class_attribute :username_method
           self.username_method = (options[:username_method] || :name).to_sym
-          # write_inheritable_attribute :username_method, (options[:username_method] || :name).to_sym
-          # class_inheritable_reader :username_method
 
           attributes_and_associations = proc do |record|
             changes = record.attributes
@@ -61,8 +59,6 @@ module SimpleAudit
           audit_changes_proc = block_given? ? block.to_proc : attributes_and_associations
           class_attribute :audit_changes
           self.audit_changes = audit_changes_proc
-          # write_inheritable_attribute :audit_changes, audit_changes_proc
-          # class_inheritable_reader :audit_changes
 
           has_many :audits, :as => :auditable, :class_name => '::SimpleAudit::Audit'
 
@@ -74,10 +70,13 @@ module SimpleAudit
 
       def audit(record, action = :update, user = nil) #:nodoc:
         user ||= User.current if User.respond_to?(:current)
-        record.audits.create(:user => user,
-          :username => user.try(self.username_method),
-          :action => action.to_s,
-          :change_log => self.audit_changes.call(record)
+
+        record.audits.create(
+          :user           => user,
+          :username       => user.try(self.username_method),
+          :action         => action.to_s,
+          :change_log     => self.audit_changes.call(record),
+          :record_changes => record.changes.delete_if{|k,v| %w(updated_at created_at).include?(k)}
         )
       end
     end
