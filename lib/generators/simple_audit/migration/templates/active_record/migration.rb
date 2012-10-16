@@ -7,6 +7,7 @@ class SimpleAuditMigration < ActiveRecord::Migration
       t.string :username
       t.string :action
       t.text   :change_log
+      t.text   :record_changes
       t.timestamps
 
     end
