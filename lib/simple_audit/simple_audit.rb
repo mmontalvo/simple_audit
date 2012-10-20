@@ -71,13 +71,18 @@ module SimpleAudit
       def audit(record, action = :update, user = nil) #:nodoc:
         user ||= User.current if User.respond_to?(:current)
 
-        record.audits.create(
+        new_audit = record.audits.create(
           :user           => user,
           :username       => user.try(self.username_method),
           :action         => action.to_s,
           :change_log     => self.audit_changes.call(record),
-          :record_changes => record.changes.delete_if{|k,v| %w(updated_at created_at).include?(k)}
+          :record_changes => nil
         )
+
+        # Make diff calculations, adding a find and an update querys
+        # hope it saves later helper process of differences..
+        other_audit = record.audits.last
+        new_audit.update_attribute(:record_changes, new_audit.delta(other_audit)) if (action.to_s == 'update' && other_audit)
       end
     end
     
