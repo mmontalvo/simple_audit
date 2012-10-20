@@ -33,7 +33,7 @@ module SimpleAudit #:nodoc:
     
         # .. finally for keys present in both, but with different values
         self.change_log.keys.each do |k|
-          if self.change_log[k].sort != other_audit.change_log[k].sort
+          if self.change_log[k] != other_audit.change_log[k]
             d[k] = [other_audit.change_log[k], self.change_log[k]]
           end
         end
