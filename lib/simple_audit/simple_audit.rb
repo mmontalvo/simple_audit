@@ -70,6 +70,7 @@ module SimpleAudit
 
       def audit(record, action = :update, user = nil) #:nodoc:
         user ||= User.current if User.respond_to?(:current)
+        other_audit = record.audits.last
 
         new_audit = record.audits.create(
           :user           => user,
@@ -81,7 +82,6 @@ module SimpleAudit
 
         # Make diff calculations, adding a find and an update querys
         # hope it saves later helper process of differences..
-        other_audit = record.audits.last
         new_audit.update_attribute(:record_changes, new_audit.delta(other_audit)) if (action.to_s == 'update' && other_audit)
       end
     end
