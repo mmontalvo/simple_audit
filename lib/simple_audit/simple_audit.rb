@@ -73,11 +73,12 @@ module SimpleAudit
         other_audit = record.audits.last
 
         new_audit = record.audits.create(
-          :user           => user,
-          :username       => user.try(self.username_method),
-          :action         => action.to_s,
-          :change_log     => self.audit_changes.call(record),
-          :record_changes => nil
+          :user            => user,
+          :username        => user.try(self.username_method),
+          :action          => action.to_s,
+          :change_log      => self.audit_changes.call(record),
+          :auditable_title => record.try(:title),
+          :record_changes  => nil
         )
 
         # Make diff calculations, adding a find and an update querys
