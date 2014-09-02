@@ -3,8 +3,8 @@ require 'test/unit'
 require 'active_support/all'
 require 'active_record'
 require 'active_record/fixtures'
-require 'action_controller'
-require 'ruby-debug'
+#require 'action_controller'
+#require 'ruby-debug'
 require 'ostruct'
 
 require File.join(File.dirname(__FILE__), "..", "generators", "simple_audit_migration", "templates", "migration.rb")

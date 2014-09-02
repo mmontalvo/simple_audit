@@ -1,5 +1,6 @@
 require 'active_record'
 require 'action_view'
+require 'protected_attributes'
 
 require 'simple_audit/simple_audit'
 require 'simple_audit/audit'
