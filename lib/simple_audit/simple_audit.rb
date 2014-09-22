@@ -83,7 +83,7 @@ module SimpleAudit
 
         # Make diff calculations, adding a find and an update querys
         # hope it saves later helper process of differences..
-        new_audit.update_attribute(:record_changes, new_audit.delta(other_audit)) if (action.to_s == 'update' && other_audit)
+        new_audit.update_attribute(:record_changes, new_audit.delta(other_audit).to_yaml) if (action.to_s == 'update' && other_audit)
       end
     end
     
