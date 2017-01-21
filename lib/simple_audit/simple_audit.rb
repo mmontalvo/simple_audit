@@ -62,8 +62,10 @@ module SimpleAudit
 
           has_many :audits, :as => :auditable, :class_name => '::SimpleAudit::Audit'
 
-          after_create {|record| record.class.audit(record, :create)}
-          after_update {|record| record.class.audit(record, :update)}
+          if !Rails.env.test?
+            after_create {|record| record.class.audit(record, :create)}
+            after_update {|record| record.class.audit(record, :update)}
+          end
 
         end
       end
