@@ -63,16 +63,16 @@ module SimpleAudit
           has_many :audits, :as => :auditable, :class_name => '::SimpleAudit::Audit'
 
           if !Rails.env.test?
-            after_create {|record| record.class.audit(record, :create)}
-            after_update {|record| record.class.audit(record, :update)}
+            after_commit {|record| record.class.audit(record)}
           end
 
         end
       end
 
-      def audit(record, action = :update, user = nil) #:nodoc:
+      def audit(record, user = nil) #:nodoc:
         user ||= User.current if User.respond_to?(:current)
         other_audit = record.audits.last
+        action = record.audits.count.zero? ? :create : :update
 
         new_audit = record.audits.create(
           :user            => user,
