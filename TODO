@@ -1,3 +1,5 @@
+# upgrade Rails version
+
 # Architecture
 * support for ActiveModel
 * ORM agnosticism
